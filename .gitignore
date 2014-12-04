@@ -1,2 +1,4 @@
 reference/
+data/
 *.wav
+*.pyc
