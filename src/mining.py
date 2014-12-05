@@ -1,85 +1,90 @@
-import process
+from process import Notes
 import random
 # process.generateNotes(filename) return list of notes
 # note: a string, consist of note number and duaration
 
-notes = []
-idx = []
-minsup = 0
+class Mining:
+    def __init__(self, n, ms):
+	self.notes = n
+	self.idx = []
+	self.minsup = ms
+	for i in xrange(len(n)-1):
+            self.idx.append(i)
 
-# return a list of frequent patterns: list of lists
-def getNotes(begin, depth):
-    #print len(notes), idx[begin], depth
-    return notes[idx[begin] + depth]
+    # return a list of frequent patterns: list of lists
+    def getNotes(self, begin, depth):
+        #print len(self.notes), self.idx[begin], depth
+        return self.notes[self.idx[begin] + depth]
 
-def vectorSwap(i, j, l):
-    while l > 0:
-	idx[i], idx[j] = idx[j], idx[i]
-	i += 1
-	j += 1
-	l -= 1
+    def vectorSwap(self, i, j, l):
+        while l > 0:
+	    self.idx[i], self.idx[j] = self.idx[j], self.idx[i]
+	    i += 1
+	    j += 1
+	    l -= 1
 
-def printList():
-    l = []
-    for i in xrange(len(idx)):
-	l += notes[idx[i]]
-    print l
-
-def doMining(begin, end, depth, equal, results):
-    #printList()
-    count = end - begin
-    if count < minsup:
-        return
-    elif equal:
-        #append to the list
-        print notes[idx[begin]:idx[begin]+depth], count
-        results.append(list(notes[begin:begin+depth]))
-    pivot = random.randint(begin, end-1)
-    idx[begin], idx[pivot] = idx[pivot], idx[begin]
-    t = getNotes(begin, depth)
-    #print "pivot: ", t
-    a, c = begin+1, end-1
-    b, d = a, c
-    r = None
-    while True: 
-	while b <= c and (getNotes(b, depth) <= t):
-	    if getNotes(b, depth) == t:
-		idx[a], idx[b] = idx[b], idx[a]
-		a += 1
+    def doMining(self, begin, end, depth, equal):
+        #printList()
+        results = []
+        count = end - begin
+        if count < self.minsup:
+            return results
+        elif equal:
+            #append to the list
+            #print notes[idx[begin]:idx[begin]+depth], count
+            if depth > 1:
+                results.append([list(self.notes[begin:begin+depth]), count])
+        pivot = random.randint(begin, end-1)
+        self.idx[begin], self.idx[pivot] = self.idx[pivot], self.idx[begin]
+        t = self.getNotes(begin, depth)
+        #print "pivot: ", t
+        a, c = begin+1, end-1
+        b, d = a, c
+        r = None
+        while True: 
+	    while b <= c and (self.getNotes(b, depth) <= t):
+	        if self.getNotes(b, depth) == t:
+		    self.idx[a], self.idx[b] = self.idx[b], self.idx[a]
+		    a += 1
+	        b += 1
+	    while b <= c and (self.getNotes(c, depth) >= t):
+	        if self.getNotes(c, depth) == t:
+		    self.idx[c], self.idx[d] = self.idx[d], self.idx[c]
+		    d -= 1
+	        c -= 1
+	    if b > c:
+	        break
+	    self.idx[b], self.idx[c] = self.idx[c], self.idx[b]
 	    b += 1
-	while b <= c and (getNotes(c, depth) >= t):
-	    if getNotes(c, depth) == t:
-		idx[c], idx[d] = idx[d], idx[c]
-		d -= 1
-	    c -= 1
-	if b > c:
-	    break
-	idx[b], idx[c] = idx[c], idx[b]
-	b += 1
-	c -= 1
-    range = min(a-begin, b-a)
-    vectorSwap(begin, b-range, range)
-    range = min(d-c, end-d-1)
-    vectorSwap(b, end-range, range)
-    #print "idx: ", idx
-    range = b-a
-    doMining(begin, begin+range, depth, False, results)
-    # "000" is the end of the music
-    if t != "0": 
-	#print begin+range, range+a+end-d-1, depth+1
-	doMining(begin+range, range+a+end-d-1, depth+1, True, results)
-    range = d - c
-    doMining(end-range, end, depth, False, results)
-    
-def mining(notes, minsup):
-    for i in xrange(len(notes)-1):
-        idx.append(i)
-    results = []
-    return doMining(0, len(notes)-1, 0, False, results)
+ 	    c -= 1
+        range = min(a-begin, b-a)
+        self.vectorSwap(begin, b-range, range)
+        range = min(d-c, end-d-1)
+        self.vectorSwap(b, end-range, range)
+        #print "idx: ", idx
+        range = b-a
+        results += self.doMining(begin, begin+range, depth, False)
+        # "000" is the end of the music
+        if t != "000": 
+	    #print begin+range, range+a+end-d-1, depth+1
+	    results += self.doMining(begin+range, range+a+end-d-1, depth+1, True)
+        range = d - c
+        results += self.doMining(end-range, end, depth, False)
+        return results
 
-notes = ["1", "1", "2", "2", "1", "1", "2", "0"]
-minsup = 2
-print mining(notes, minsup)
+    def mining(self):
+        return self.doMining(0, len(self.notes)-1, 0, False)
+
+
+n = Notes("mozart")
+notes = n.generateNotes("mozart-k331-1.txt")
+
+m = Mining(notes, 3)
+freqNotes = m.mining()
+	
+for note in m.mining():
+    print note[0], note[1]
+
 
 
 

@@ -7,17 +7,23 @@ class Notes:
   def __init__(self, f):
     self.file = f
 
-  def generateNotes(f, upperbound=INTERVAL_MAX):
+  def generateNotes(self, f, upperbound=INTERVAL_MAX):
     pitches = []
     intervals = []
     for line in open(f):
       a = line.strip("\n").split()
       interval = float(a[2])-float(a[1])
       if interval < upperbound :
-        pitches.append(a[0])
+        b = a[0].split('.')
+	# if note < 10, add a '0'  
+	if len(b[0]) == 1:
+	    b[0] = "0" + b[0]
+        pitches.append(b[0])
         intervals.append(interval)
 
-    return self.normalizeIntervals(pitches, intervals)
+    notes = self.normalizeIntervals(pitches, intervals)
+    notes.append("000")
+    return notes
 
   def normalizeIntervals(self, pitches, intervals):
     # @ list of intervals, float
@@ -26,6 +32,15 @@ class Notes:
     d = (max(intervals) - min(intervals))/INTERVAL_PACE
     # !!!!!!!!!1
 
-    intervals = list("%d"round(e/d) for e in intervals)
+    intervals = list("%d"%round(e/d+1) for e in intervals)
+    
+    # each note include its pitch and its duaration
     norm_res = list(pitches[i] + intervals[i] for i in xrange(len(intervals)))
+    
+    # each note inclued only its pitch
+    # norm_res = pitches
     return norm_res
+
+
+notes = Notes('mozart-k331-1.txt')
+
