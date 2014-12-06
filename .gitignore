@@ -2,3 +2,7 @@ reference/
 data/
 *.wav
 *.pyc
+*.out
+*.log
+*.swp
+
