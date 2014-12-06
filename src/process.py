@@ -31,15 +31,12 @@ class Notes:
   def normalizeIntervals(self, pitches, intervals):
     # @ list of intervals, float
     # @convert into normalize 1-4 string list
-
-    d = (max(intervals) - min(intervals))/INTERVAL_PACE
+    max_i, min_i = max(intervals), min(intervals)
+    d = (max_i - min_i)/INTERVAL_PACE
     # !!!!!!!!!1
-
-    intervals = list("%d"%round(e/d+1) for e in intervals)
-    
+    intervals = list("%d"%round((e-min_i)/d+1) for e in intervals)
     # each note include its pitch and its duaration
     norm_res = list(pitches[i] + intervals[i] for i in xrange(len(intervals)))
-    
     # each note inclued only its pitch
     # norm_res = pitches
     return norm_res
