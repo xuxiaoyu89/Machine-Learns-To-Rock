@@ -77,7 +77,7 @@ class Mining:
 
 
 n = Notes("mozart")
-notes = n.generateNotes("mozart-k331-1.txt")
+notes = n.generateNotes("mozart.txt")
 
 m = Mining(notes, 3)
 freqNotes = m.mining()

@@ -11,6 +11,9 @@ class Notes:
     pitches = []
     intervals = []
     for line in open(f):
+      # some lines are empty
+      if len(line) < 3:
+	continue
       a = line.strip("\n").split()
       interval = float(a[2])-float(a[1])
       if interval < upperbound :
@@ -40,7 +43,4 @@ class Notes:
     # each note inclued only its pitch
     # norm_res = pitches
     return norm_res
-
-
-notes = Notes('mozart-k331-1.txt')
 
