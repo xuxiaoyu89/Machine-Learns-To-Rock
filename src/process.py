@@ -2,6 +2,8 @@
 INTERVAL_MAX = 2.0
 INTERVAL_PACE = 4
 
+
+
 # Notes processing class
 class Notes:
   def __init__(self, f):
