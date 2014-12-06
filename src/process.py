@@ -7,10 +7,10 @@ class Notes:
   def __init__(self, f):
     self.file = f
 
-  def generateNotes(f, upperbound=INTERVAL_MAX):
+  def generateNotes(self, upperbound=INTERVAL_MAX):
     pitches = []
     intervals = []
-    for line in open(f):
+    for line in open(self.file):
       a = line.strip("\n").split()
       interval = float(a[2])-float(a[1])
       if interval < upperbound :
@@ -26,6 +26,11 @@ class Notes:
     d = (max(intervals) - min(intervals))/INTERVAL_PACE
     # !!!!!!!!!1
 
-    intervals = list("%d"round(e/d) for e in intervals)
+    intervals = list("%d"%round(e/d) for e in intervals)
     norm_res = list(pitches[i] + intervals[i] for i in xrange(len(intervals)))
     return norm_res
+
+notes = Notes("../data/mozart.notes")
+x = notes.generateNotes()
+print len(x)
+print x
