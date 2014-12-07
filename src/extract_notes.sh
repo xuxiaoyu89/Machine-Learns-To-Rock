@@ -7,7 +7,7 @@ do
   name="${f%.*}"
   echo "Processing $name ..."
   aubionotes -i $f -v > $TMP 2>&1
-  sed '1, 5d' $TMP > $name.notes
+  sed '1, 5d' $TMP | sed '$d' | sed '$d' > $name.notes
   echo "Done"
 done
 
