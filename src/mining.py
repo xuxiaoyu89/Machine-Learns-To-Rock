@@ -77,14 +77,23 @@ class Mining:
 
 
 n = Notes("mozart")
-notes = n.generateNotes("mozart.txt")
-
-m = Mining(notes, 3)
-freqNotes = m.mining()
-	
-for note in m.mining():
-    print note[0], note[1]
-
-
-
+freqNotes = {}
+minsup = 3
+for i in xrange(11):
+    filename = "../data/" + i + ".notes"
+    notes = n.generateNotes(filename)
+    m = Mining(notes, 1)
+    fnotes = m.mining()
+    for note in fnotes:
+	if freqNotes.contains_key(note[0]):
+	    freqNotes[note[0]] += note[1]
+	else:
+	    freqNotes[note[0]] = note[1]  
+    
+#output to a file: ../freq_samples
+fo = open("../freq_samples/freq.notes", "wb")
+for key in freqNotes:
+    if freqNotes[key] >= minsup:
+        fo.write(key + " " + freqNotes[key])
+fo.close()
 
