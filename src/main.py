@@ -20,7 +20,7 @@ else:
   op = sys.argv[1]
   if op == "train" and len(sys.argv) >3: 
     train(sys.argv[2], sys.argv[3])
-  if op == "cocmpose" and len(sys.argv)>3:
+  if op == "compose" and len(sys.argv)>3:
     csv = None if len(sys.argv) < 4 else sys.argv[4] 
     compose(sys.argv[2], sys.argv[3], csv)
   else:
