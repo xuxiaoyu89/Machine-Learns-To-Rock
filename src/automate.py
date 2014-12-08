@@ -33,18 +33,55 @@ def importQ(filename, l = 2):
   return Q
 
 
-def compose(Q, S, F=[]):
+def getSum(Q, k):
+  # serve for compose, 
+  # take list of keys in Q, return total counts in Q[k] <-- a map
+  n = 0
+  for e in k:
+    n += sum(Q[k].values())
+  return n
+
+def compose(Q, S, F=[], scale=10):
   # The automaton machine
   # @Q is the set of all states
   # @S is sigma, the input sequence
   # @F is the final states, default empty
   # transitions and q0(initial)  will be computed
-  first = True
+  # scale: prevent prob from being too small
+  melody = {}
   while S != []:
     t = "%s"%S.pop(0)
-    if first:
-      first = False
-      
+    print "rythm: "+t
+    if melody.keys() == [] :
+      print "...empty melody"
+      list(melody[k] = 0 for k in Q.keys() if k[2] == t)
+      pool = getSum(Q, melody.keys())
+      for k in melody.keys(): melody[k] = scale*float(getSum(Q, [k]))/pool
+    else:
+      old = list(melody.keys())
+      for h in old: #current seq
+        prev = h[-3:] #last note on current seq
+        p_h = melody[h] #pirio prob of current seq
+        pool = getSum(Q, [Q[prev]]) #count for last note
+        list(melody[h+q] = scale*p_h*float(Q[prev][q])/pool for q in Q[prev].keys() if q[2] == t)
+        del melody[h]
+    print "...%d seq available"%len(melody.keys())
+
+  print "\ndone!\n"
+
+  max_p, res = 0, "000"
+  for k in melody.keys():
+    if melody[k] > max_p:
+      max_p, res = melody[k], k
+
+  print res, max_p
+  notes_l = []
+  for i in xrange(0, len(res)/3):
+    note = res[i*3:i*3+3]
+    notes_l.append(note)
+
+  return notes_l
+  
 
 
 
