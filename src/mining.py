@@ -76,24 +76,35 @@ class Mining:
         return self.doMining(0, len(self.notes)-1, 0, False)
 
 
+def getNoteSeq(note):
+    noteSeq = ""
+    for i in xrange(len(note)-1):
+	noteSeq += note[i] + ", "
+    noteSeq += note[-1]
+    return noteSeq
+
 n = Notes("mozart")
 freqNotes = {}
 minsup = 3
-for i in xrange(11):
-    filename = "../data/" + i + ".notes"
+for i in xrange(1):
+    print "now mining: ", i
+    filename = "../data/" + str(i) + ".notes"
     notes = n.generateNotes(filename)
-    m = Mining(notes, 1)
+    m = Mining(notes, 2)
     fnotes = m.mining()
+    print len(fnotes)
+    print fnotes[0]
     for note in fnotes:
-	if freqNotes.contains_key(note[0]):
-	    freqNotes[note[0]] += note[1]
+        noteSeq = getNoteSeq(note[0])
+	if noteSeq in freqNotes:
+	    freqNotes[noteSeq] += note[1]
 	else:
-	    freqNotes[note[0]] = note[1]  
-    
+	    freqNotes[noteSeq] = note[1]
 #output to a file: ../freq_samples
-fo = open("../freq_samples/freq.notes", "wb")
+fo = open("../freq_samples/freq.notes", "w+")
 for key in freqNotes:
     if freqNotes[key] >= minsup:
-        fo.write(key + " " + freqNotes[key])
+	print key
+        fo.write(key + "\t" + str(freqNotes[key]) + "\n")
 fo.close()
 

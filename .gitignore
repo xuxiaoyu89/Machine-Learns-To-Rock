@@ -1,8 +1,9 @@
 reference/
 data/
+test/
 *.wav
 *.pyc
 *.out
 *.log
 *.swp
-
+.DS_Store
