@@ -38,7 +38,8 @@ def getSum(Q, k):
   # take list of keys in Q, return total counts in Q[k] <-- a map
   n = 0
   for e in k:
-    n += sum(Q[k].values())
+    try: n += sum(Q[e].values())
+    except KeyError: pass
   return n
 
 def compose(Q, S, F=[], scale=10):
@@ -63,7 +64,9 @@ def compose(Q, S, F=[], scale=10):
         prev = h[-3:] #last note on current seq
         p_h = melody[h] #pirio prob of current seq
         pool = getSum(Q, [Q[prev]]) #count for last note
-        list(melody[h+q] = scale*p_h*float(Q[prev][q])/pool for q in Q[prev].keys() if q[2] == t)
+        if pool != 0:
+          for q in Q[prev].keys():
+            if q[2] == t: melody[h+q] = scale*p_h*float(Q[prev][q])/pool
         del melody[h]
     print "...%d seq available"%len(melody.keys())
 
