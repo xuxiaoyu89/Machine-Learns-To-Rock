@@ -28,13 +28,20 @@ def train(path="../data/", minsup=3, out="../freq_samples/freq.notes"):
       else:
 	freqNotes[noteSeq] = note[1]
   print "...Done!\nSaving to "+out+"\nExit..."
+  print "len of Q: ", len(freqNotes)
   atm.exportQ(freqNotes, out, minsup)
   return out
 
-def compose(QFile, SFile, CSVFile="../melody.csv"):
+def compose(QFile, SFile, CSVFile):
   Q = atm.importQ(QFile)
-  S = list(int(line.strip("\n")) for line in open(SFile, 'r'))
-  print "Composing based on "+QFile+"\n\twith rythm in "+SFile
+  S = []
+  for line in open(SFile, 'r'):
+    line.strip("\n").strip(" ")
+    if line != "":
+      print line
+      S.append(int(line))
+
+  print "Composing based on "+QFile+"\n\twith rythm in "+SFile, len(S)
   melody = atm.compose(Q, S)
   print "...Done!\nExport to csv...\nExit..."
   atm.export2CSV(melody, CSVFile)
@@ -66,10 +73,9 @@ else:
   import automate as atm
   op = sys.argv[1]
   if op == "train" and len(sys.argv) >3: 
-    train(sys.argv[2], sys.argv[3])
-  if op == "compose" and len(sys.argv)>3:
-    csv = None if len(sys.argv) < 4 else sys.argv[4] 
-    compose(sys.argv[2], sys.argv[3], csv)
+    train(sys.argv[2], int(sys.argv[3]))
+  elif op == "compose" and len(sys.argv)>4:
+    compose(sys.argv[2], sys.argv[3], sys.argv[4])
   else:
     print help_doc
     sys.exit()
