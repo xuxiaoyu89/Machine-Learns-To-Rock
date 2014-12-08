@@ -1,35 +1,8 @@
 import sys, os
 
-help_doc="""
-Missing or Wrong parameter.
-Usage:
-
-	python main.py train|compose
-
-Exiting...
-"""
-
-if len(sys.argv) < 2:
-  print help_doc
-  sys.exit()
-
-else:
-  import process
-  import mining as mine
-  import automate as atm
-  op = sys.argv[1]
-  if op == "train" and len(sys.argv) >3: 
-    train(sys.argv[2], sys.argv[3])
-  if op == "compose" and len(sys.argv)>3:
-    csv = None if len(sys.argv) < 4 else sys.argv[4] 
-    compose(sys.argv[2], sys.argv[3], csv)
-  else:
-    print help_doc
-    sys.exit()
-
 
 def train(path="../data/", minsup=3, out="../freq_samples/freq.notes"):
-  n = Notes()
+  n = process.Notes()
 
   try: files = os.listdir(path)
   except OSError:
@@ -40,7 +13,8 @@ def train(path="../data/", minsup=3, out="../freq_samples/freq.notes"):
 
   freqNotes, mined = {}, 0
   for f in files:
-    if !f.endswith(".notes"): continue
+    if not f.endswith(".notes"): continue
+    f = path+f
     print "now mining: ", f
 
     notes = n.generateNotes(f)
@@ -64,5 +38,41 @@ def compose(QFile, SFile, CSVFile="../melody.csv"):
   melody = atm.compose(Q, S)
   print "...Done!\nExport to csv...\nExit..."
   atm.export2CSV(melody, CSVFile)
+
+help_doc="""
+Missing or Wrong parameter.
+Usage:
+  Train data:
+	python main.py train \ \n
+               "path_for_*.notes_dir" \ \n
+               int_minsup
+
+  Compose melody:
+        python main.py compose \ \n
+               "freq_notes_dir" \ \n
+               "input_rythm_dir" \ \n
+               "output_csv_dir" (optional, for midi)
+
+Exiting...
+"""
+
+if len(sys.argv) < 2:
+  print help_doc
+  sys.exit()
+
+else:
+  import process
+  import mining as mine
+  import automate as atm
+  op = sys.argv[1]
+  if op == "train" and len(sys.argv) >3: 
+    train(sys.argv[2], sys.argv[3])
+  if op == "compose" and len(sys.argv)>3:
+    csv = None if len(sys.argv) < 4 else sys.argv[4] 
+    compose(sys.argv[2], sys.argv[3], csv)
+  else:
+    print help_doc
+    sys.exit()
+
 
 
