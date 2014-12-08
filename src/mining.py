@@ -85,6 +85,7 @@ def getNoteSeq(note):
     noteSeq += note[-1]
     return noteSeq
 
+"""
 n = Notes("mozart")
 freqNotes = {}
 minsup = 3
@@ -116,3 +117,4 @@ S = [1,1,1,1,1,1,1,1,1,1]
 melody = automate.compose(Q, S)
 
 automate.export2CSV(melody, "../out.csv")
+"""
