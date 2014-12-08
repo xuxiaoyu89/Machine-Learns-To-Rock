@@ -1,6 +1,7 @@
 from process import Notes
 import random
-from 
+import automate
+ 
 # process.generateNotes(filename) return list of notes
 # note: a string, consist of note number and duaration
 
@@ -87,7 +88,7 @@ def getNoteSeq(note):
 n = Notes("mozart")
 freqNotes = {}
 minsup = 3
-for i in xrange(1):
+for i in xrange(10):
     print "now mining: ", i
     filename = "../data/" + str(i) + ".notes"
     notes = n.generateNotes(filename)
@@ -102,10 +103,16 @@ for i in xrange(1):
 	else:
 	    freqNotes[noteSeq] = note[1]
 #output to a file: ../freq_samples
-fo = open("../freq_samples/freq.notes", "w+")
+QFile = "../freq_samples/freq.notes"
+fo = open(QFile, "w+")
 for key in freqNotes:
     if freqNotes[key] >= minsup:
 	print key
         fo.write(key + "\t" + str(freqNotes[key]) + "\n")
 fo.close()
 
+Q = automate.importQ(QFile)
+S = [1,1,1,1,1,1,1,1,1,1]
+melody = automate.compose(Q, S)
+
+automate.export2CSV(melody, "../out.csv")
