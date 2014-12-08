@@ -81,7 +81,8 @@ def compose(Q, S, F=[], scale=10):
   notes_l = []
   for i in xrange(0, len(res)/3):
     note = res[i*3:i*3+3]
-    notes_l.append(note)
+    note_ = [int(note[0:2]), int(note[2])]
+    notes_l.append(note_)
 
   return notes_l
   
