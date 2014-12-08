@@ -1,5 +1,6 @@
 from process import Notes
 import random
+from 
 # process.generateNotes(filename) return list of notes
 # note: a string, consist of note number and duaration
 
@@ -79,7 +80,7 @@ class Mining:
 def getNoteSeq(note):
     noteSeq = ""
     for i in xrange(len(note)-1):
-	noteSeq += note[i] + ", "
+	noteSeq += note[i] + ","
     noteSeq += note[-1]
     return noteSeq
 
