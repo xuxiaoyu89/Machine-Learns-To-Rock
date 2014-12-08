@@ -5,7 +5,6 @@ INTERVAL_PACE = 4
 
 # Notes processing class
 class Notes:
-
   def generateNotes(self, f, upperbound=INTERVAL_MAX):
     pitches = []
     intervals = []

@@ -1,15 +1,13 @@
 import process as proc
 
-def exportQ(Q, filename):
+def exportQ(Q, filename, minsup):
   # @Q is map of [notes] --> int (count)
   # @save to file
   f = open(filename, 'w')
   for k in Q.keys():
-    for n in k:
-      f.write(n,",")
-    f.write("\t")
-    f.write(Q[k], "\n")
-  close(f)
+    if Q[k] >= minsup:
+      f.write(k+"\t"+str(Q[k])+"\n")
+  f.close()
 
 def importQ(filename, l = 2):
   # @file where Q is stored (format as exportQ)
