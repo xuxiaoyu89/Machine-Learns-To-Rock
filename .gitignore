@@ -1,6 +1,7 @@
 reference/
 data/
 test/
+freq_samples/
 *.wav
 *.pyc
 *.out
