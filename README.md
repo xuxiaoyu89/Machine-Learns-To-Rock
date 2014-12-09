@@ -6,6 +6,7 @@ machine learning project - algorithmic composition
 
 To do list
 1. write a shell to generate midi files to csv files
+
 2. write a function in process.py to extract notes sequences from csv files, note format: note + duration
 
 ----------How To Run
