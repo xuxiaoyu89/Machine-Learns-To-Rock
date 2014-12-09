@@ -8,23 +8,41 @@ class Notes:
   def generateNotes(self, f, upperbound=INTERVAL_MAX):
     pitches = []
     intervals = []
+    noteSeqs = []
+    prev = None
     for line in open(f):
       # some lines are empty
-      if len(line) < 3:
-	continue
-      a = line.strip("\n").split()
-      interval = float(a[2])-float(a[1])
-      if interval < upperbound :
-        b = a[0].split('.')
-	# if note < 10, add a '0'  
-	if len(b[0]) == 1:
-	    b[0] = "0" + b[0]
-        pitches.append(b[0])
-        intervals.append(interval)
+      a = line.strip("\n").split(', ')
+      print a[2] 
+      if a[2] == "Note_on_c":
+        print "!!!!!"
+	if prev == None:
+          prev = [a[0], a[1], a[4]]
+	# end of a track
+        elif a[0] != prev[0]:
+	  prev = [a[0], a[1], a[4]]
+	  # append noteSeq to noteSeqs
+	  noteSeq = self.normalizeIntervals(pitches, intervals)
+          print "noteSeq len: ", len(noteSeq)
+          noteSeqs.append(noteSeq)
+          # clear pitches and intervals
+          pitches[:] = []
+	  intervals[:] = []
+        else:
+	  # this note has the same time with the prev one, ignore it
+	  if a[1] == prev[0]:
+	    continue
+	  else:
+	    # append the prev note
+	    pitches.append(prev[4])
+	    intervals.append(int(a[1])-int(prev[1]))
+    print len(noteSeqs)
+    print len(noteSeqs[0])
+    return noteSeqs
 
-    notes = self.normalizeIntervals(pitches, intervals)
-    notes.append("000")
-    return notes
+    #noteseq = self.normalizeIntervals(pitches, intervals)
+    #noteseq.append("000")
+    #return notes
 
   def normalizeIntervals(self, pitches, intervals):
     # @ list of intervals, float
@@ -38,4 +56,9 @@ class Notes:
     # each note inclued only its pitch
     # norm_res = pitches
     return norm_res
+
+n = Notes()
+n.generateNotes("../data/supr_mch.csv")
+
+
 
