@@ -32,9 +32,9 @@ class Mining:
         if count < self.minsup:
             return results
         elif equal:
-            #append to the list
-            #print notes[idx[begin]:idx[begin]+depth], count
-            if depth > 1:
+            # append to the list
+            # only append whose length is between 1 and 10
+            if depth > 1 and depth < 10:
                 results.append([list(self.notes[begin:begin+depth]), count])
         pivot = random.randint(begin, end-1)
         self.idx[begin], self.idx[pivot] = self.idx[pivot], self.idx[begin]
@@ -86,7 +86,7 @@ def getNoteSeq(note):
     return noteSeq
 
 """
-n = Notes("mozart")
+n = Notes()
 freqNotes = {}
 minsup = 3
 for i in xrange(10):

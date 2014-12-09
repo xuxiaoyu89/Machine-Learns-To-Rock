@@ -13,20 +13,25 @@ def train(path="../data/", minsup=3, out="../freq_samples/freq.notes"):
 
   freqNotes, mined = {}, 0
   for f in files:
-    if not f.endswith(".notes"): continue
+    if not f.endswith(".csv"): continue
     f = path+f
     print "now mining: ", f
 
-    notes = n.generateNotes(f)
-    m = mine.Mining(notes, 2)
-    fnotes = m.mining()
-    print len(fnotes), fnotes[0]
-    for note in fnotes:
-      noteSeq = mine.getNoteSeq(note[0])
-      if noteSeq in freqNotes:
-	freqNotes[noteSeq] += note[1]
-      else:
-	freqNotes[noteSeq] = note[1]
+    noteSeqs = n.generateNotes(f)
+    if len(noteSeqs) == 0:
+      continue
+    for noteSeq in noteSeqs:
+      m = mine.Mining(noteSeq, 2)
+      fnotes = m.mining()
+      # print len(fnotes), fnotes[0]
+      if len(fnotes) == 0:
+	continue
+      for note in fnotes:
+        noteSeq = mine.getNoteSeq(note[0])
+        if noteSeq in freqNotes:
+	  freqNotes[noteSeq] += note[1]
+        else:
+	  freqNotes[noteSeq] = note[1]
   print "...Done!\nSaving to "+out+"\nExit..."
   print "len of Q: ", len(freqNotes)
   atm.exportQ(freqNotes, out, minsup)

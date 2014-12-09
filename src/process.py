@@ -13,9 +13,7 @@ class Notes:
     for line in open(f):
       # some lines are empty
       a = line.strip("\n").split(', ')
-      print a[2] 
       if a[2] == "Note_on_c":
-        print "!!!!!"
 	if prev == None:
           prev = [a[0], a[1], a[4]]
 	# end of a track
@@ -23,7 +21,7 @@ class Notes:
 	  prev = [a[0], a[1], a[4]]
 	  # append noteSeq to noteSeqs
 	  noteSeq = self.normalizeIntervals(pitches, intervals)
-          print "noteSeq len: ", len(noteSeq)
+     	  noteSeq.append("000")
           noteSeqs.append(noteSeq)
           # clear pitches and intervals
           pitches[:] = []
@@ -34,10 +32,9 @@ class Notes:
 	    continue
 	  else:
 	    # append the prev note
-	    pitches.append(prev[4])
-	    intervals.append(int(a[1])-int(prev[1]))
-    print len(noteSeqs)
-    print len(noteSeqs[0])
+	    pitches.append(prev[2])
+	    intervals.append(int(a[1])-int(prev[1])/1000.0)
+	    prev = [a[0], a[1], a[4]]
     return noteSeqs
 
     #noteseq = self.normalizeIntervals(pitches, intervals)
@@ -50,7 +47,8 @@ class Notes:
     max_i, min_i = max(intervals), min(intervals)
     d = (max_i - min_i)/INTERVAL_PACE
     # !!!!!!!!!1
-    intervals = list("%d"%round((e-min_i)/d+1) for e in intervals)
+    if d == 0: intervals = list("1" for e in intervals)
+    else: intervals = list("%d"%round((e-min_i)/d+1) for e in intervals)
     # each note include its pitch and its duaration
     norm_res = list(pitches[i] + intervals[i] for i in xrange(len(intervals)))
     # each note inclued only its pitch
@@ -58,7 +56,7 @@ class Notes:
     return norm_res
 
 n = Notes()
-n.generateNotes("../data/supr_mch.csv")
+n.generateNotes("../data/1251gladiatreg.csv")
 
 
 
