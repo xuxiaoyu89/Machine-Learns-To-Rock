@@ -4,11 +4,15 @@ INTERVAL_PACE = 4
 
 
 # Notes processing class
-class Notes:
+class Process:
   def generateNotes(self, f, upperbound=INTERVAL_MAX):
     pitches = []
     intervals = []
     noteSeqs = []
+    filename = f.rstrip(".csv")
+    # print filename
+    # file = open(filename+".note", "w")
+    
     prev = None
     for line in open(f):
       # some lines are empty
@@ -42,7 +46,7 @@ class Notes:
 	    prev = [a[0], a[1], a[4]]
     for noteSeq in noteSeqs:
       for note in noteSeq:
-	print note
+	# print note
     return noteSeqs
 
     #noteseq = self.normalizeIntervals(pitches, intervals)
@@ -62,9 +66,18 @@ class Notes:
     # each note inclued only its pitch
     # norm_res = pitches
     return norm_res
-
+'''
 n = Notes()
 n.generateNotes("../data/1501gbson1.csv")
 
+path = "../data/"
+try: files = os.listdir(path)
+  except OSError:
+    print "Invalid Directory: "+path+"\nExiting...\n"
+    return
 
-
+  for f in files:
+    if not f.endswith(".csv"): continue
+    f = path+f
+    noteSeqs = n.generateNotes(f)
+'''
