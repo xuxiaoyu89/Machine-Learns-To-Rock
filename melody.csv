@@ -7,7 +7,23 @@
 2, 0, Start_track
 2, 0, MIDI_port, 0
 2, 0, Title_t, "E. Piano"
-2, 0, Note_on_c, 1, 69, 79
-2, 500, Note_off_c, 1, 69, 0
-2, 500, End_Track
+2, 0, Note_on_c, 1, 72, 79
+2, 500, Note_off_c, 1, 72, 0
+2, 500, Note_on_c, 1, 72, 79
+2, 1000, Note_off_c, 1, 72, 0
+2, 1000, Note_on_c, 1, 72, 79
+2, 1750, Note_off_c, 1, 72, 0
+2, 1750, Note_on_c, 1, 72, 79
+2, 2250, Note_off_c, 1, 72, 0
+2, 2250, Note_on_c, 1, 72, 79
+2, 2750, Note_off_c, 1, 72, 0
+2, 2750, Note_on_c, 1, 72, 79
+2, 3500, Note_off_c, 1, 72, 0
+2, 3500, Note_on_c, 1, 72, 79
+2, 4000, Note_off_c, 1, 72, 0
+2, 4000, Note_on_c, 1, 72, 79
+2, 4500, Note_off_c, 1, 72, 0
+2, 4500, Note_on_c, 1, 72, 79
+2, 5250, Note_off_c, 1, 72, 0
+2, 5250, End_Track
 0, 0, End_of_file
