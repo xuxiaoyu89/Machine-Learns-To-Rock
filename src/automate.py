@@ -107,9 +107,10 @@ def compose(Q, S, F=[], scale=10):
 
   max_p, res = 0, "0000"
   for k in melody.keys():
+    print "melody: ", k
     if melody[k] > max_p:
       max_p, res = melody[k], k
-
+      
   print res, max_p
   notes_l = []
   for i in xrange(0, len(res)/4):
