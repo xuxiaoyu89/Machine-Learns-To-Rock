@@ -19,26 +19,34 @@ class Notes:
 	# end of a track
         elif a[0] != prev[0]:
 	  prev = [a[0], a[1], a[4]]
+          # print a[0], len(intervals)
 	  # append noteSeq to noteSeqs
-	  noteSeq = self.normalizeIntervals(pitches, intervals)
-     	  noteSeq.append("000")
-          noteSeqs.append(noteSeq)
+	  if len(intervals) != 0:
+	    noteSeq = self.normalizeIntervals(pitches, intervals)
+     	    noteSeq.append("0000")
+            noteSeqs.append(noteSeq)
           # clear pitches and intervals
           pitches[:] = []
 	  intervals[:] = []
         else:
 	  # this note has the same time with the prev one, ignore it
-	  if a[1] == prev[0]:
+	  if a[1] == prev[1]:
 	    continue
 	  else:
 	    # append the prev note
+	    if len(prev[2]) == 1: prev[2] = "00" + prev[2]
+	    if len(prev[2]) == 2: prev[2] = "0" + prev[2]
 	    pitches.append(prev[2])
-	    intervals.append(int(a[1])-int(prev[1])/1000.0)
+	    # print (int(a[1])-int(prev[1]))/1000.0
+	    intervals.append((int(a[1])-int(prev[1]))/1000.0)
 	    prev = [a[0], a[1], a[4]]
+    for noteSeq in noteSeqs:
+      for note in noteSeq:
+	print note
     return noteSeqs
 
     #noteseq = self.normalizeIntervals(pitches, intervals)
-    #noteseq.append("000")
+    #noteseq.append("0000")
     #return notes
 
   def normalizeIntervals(self, pitches, intervals):
@@ -56,7 +64,7 @@ class Notes:
     return norm_res
 
 n = Notes()
-n.generateNotes("../data/1251gladiatreg.csv")
+n.generateNotes("../data/1501gbson1.csv")
 
 
 

@@ -67,7 +67,7 @@ class Mining:
         range = b-a
         results += self.doMining(begin, begin+range, depth, False)
         # "000" is the end of the music
-        if t != "000": 
+        if t != "0000": 
 	    #print begin+range, range+a+end-d-1, depth+1
 	    results += self.doMining(begin+range, range+a+end-d-1, depth+1, True)
         range = d - c

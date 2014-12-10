@@ -29,7 +29,10 @@ def importQ(filename, l = 2):
     
     try: Q[h][ns[1]] += count
     except KeyError: Q[h][ns[1]] = count
-
+  for k in Q.keys():
+    print "key: ", k
+    for k1 in Q[k].keys():
+      print k1
   return Q
 
 csv_header='0, 0, Header, 1, 13, 384\n1, 0, Start_track\n1, 0, Time_signature, 4, 2, 24, 8\n1, 0, Key_signature, 0, "major"\n1, 0, Tempo, 451127\n1, 0, End_track\n2, 0, Start_track\n2, 0, MIDI_port, 0\n2, 0, Title_t, "E. Piano"\n'
@@ -79,7 +82,8 @@ def compose(Q, S, F=[], scale=10):
     if melody.keys() == [] :
       print "...empty melody"
       for k in Q.keys():
-        if k[2] == t: melody[k] = 0
+        # print "key: ", k
+        if k[3] == t: melody[k] = 0
 
       pool = getSum(Q, melody.keys())
       for k in melody.keys(): melody[k] = scale*float(getSum(Q, [k]))/pool
@@ -87,27 +91,30 @@ def compose(Q, S, F=[], scale=10):
     else:
       old = list(melody.keys())
       for h in old: #current seq
-        prev = h[-3:] #last note on current seq
+        prev = h[-4:] #last note on current seq
         p_h = melody[h] #pirio prob of current seq
         pool = getSum(Q, [prev]) #count for last note
+        # print prev, pool 
         if pool != 0:
+          # print len(Q[prev].keys())
           for q in Q[prev].keys():
-            if q[2] == t: melody[h+q] = scale*p_h*float(Q[prev][q])/pool
+	    # print q[3], t
+            if q[3] == t: melody[h+q] = scale*p_h*float(Q[prev][q])/pool
         del melody[h]
     print "...%d seq available"%len(melody.keys())
 
   print "\ndone!\n"
 
-  max_p, res = 0, "000"
+  max_p, res = 0, "0000"
   for k in melody.keys():
     if melody[k] > max_p:
       max_p, res = melody[k], k
 
   print res, max_p
   notes_l = []
-  for i in xrange(0, len(res)/3):
-    note = res[i*3:i*3+3]
-    note_ = [int(note[0:2]), int(note[2])]
+  for i in xrange(0, len(res)/4):
+    note = res[i*4:i*4+4]
+    note_ = [int(note[0:3]), int(note[3])]
     notes_l.append(note_)
 
   return notes_l
