@@ -1,7 +1,7 @@
 # normalize parameters
 INTERVAL_MAX = 2.0
 INTERVAL_PACE = 4
-
+import os
 
 # Notes processing class
 class Process:
@@ -10,9 +10,10 @@ class Process:
     intervals = []
     noteSeqs = []
     filename = f.rstrip(".csv")
-    # print filename
+    print filename
     # file = open(filename+".note", "w")
-    
+    i = 0
+
     prev = None
     for line in open(f):
       # some lines are empty
@@ -26,7 +27,12 @@ class Process:
           # print a[0], len(intervals)
 	  # append noteSeq to noteSeqs
 	  if len(intervals) != 0:
-	    noteSeq = self.normalizeIntervals(pitches, intervals)
+	    file = open(filename + "-" + str(i) + ".notes", "w")
+            i += 1
+	    for j in xrange(len(pitches)):
+	      file.write(pitches[j] + "\t" + str(intervals[j]) + "\n")
+	    file.close()
+            noteSeq = self.normalizeIntervals(pitches, intervals)
      	    noteSeq.append("0000")
             noteSeqs.append(noteSeq)
           # clear pitches and intervals
@@ -42,10 +48,10 @@ class Process:
 	    if len(prev[2]) == 2: prev[2] = "0" + prev[2]
 	    pitches.append(prev[2])
 	    # print (int(a[1])-int(prev[1]))/1000.0
-	    intervals.append((int(a[1])-int(prev[1]))/1000.0)
+	    intervals.append((int(a[1])-int(prev[1])))
 	    prev = [a[0], a[1], a[4]]
-    for noteSeq in noteSeqs:
-      for note in noteSeq:
+    #for noteSeq in noteSeqs:
+      #for note in noteSeq:
 	# print note
     return noteSeqs
 
@@ -66,18 +72,21 @@ class Process:
     # each note inclued only its pitch
     # norm_res = pitches
     return norm_res
-'''
-n = Notes()
-n.generateNotes("../data/1501gbson1.csv")
+
+n = Process()
+# n.generateNotes("../data/1501gbson1.csv")
 
 path = "../data/"
 try: files = os.listdir(path)
-  except OSError:
-    print "Invalid Directory: "+path+"\nExiting...\n"
-    return
+except OSError:
+  print "Invalid Directory: "+path+"\nExiting...\n"
 
-  for f in files:
-    if not f.endswith(".csv"): continue
-    f = path+f
-    noteSeqs = n.generateNotes(f)
-'''
+for f in files:
+  if not f.endswith(".csv"): continue
+  f = path+f
+  noteSeqs = n.generateNotes(f)
+
+
+
+
+

@@ -1,4 +1,4 @@
-from process import Notes
+from process import Process
 import random
 import automate
  
@@ -86,7 +86,7 @@ def getNoteSeq(note):
     return noteSeq
 
 """
-n = Notes()
+n = Process()
 freqNotes = {}
 minsup = 3
 for i in xrange(10):
