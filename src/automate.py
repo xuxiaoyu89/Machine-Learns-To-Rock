@@ -1,4 +1,5 @@
 import process as proc
+from process import NOTE_LEN, PITCH_LEN
 
 def exportQ(Q, filename, minsup):
   # @Q is map of [notes] --> int (count)
@@ -66,7 +67,7 @@ def getSum(Q, k):
     except KeyError: pass
   return n
 
-def compose(Q, S, F=[], scale=10):
+def compose(Q, S, F=[], scale=2):
   # The automaton machine
   # @Q is the set of all states
   # @S is sigma, the input sequence
@@ -75,15 +76,16 @@ def compose(Q, S, F=[], scale=10):
   # scale: prevent prob from being too small
   melody = {}
   while S != []:
-
+    
     t = "%s"%S.pop(0)
+    if len(t) < 2: t = "0"+t
     print "rythm: "+t
 
     if melody.keys() == [] :
       print "...empty melody"
       for k in Q.keys():
         # print "key: ", k
-        if k[3] == t: melody[k] = 0
+        if k[(PITCH_LEN-NOTE_LEN):] == t: melody[k] = 0
 
       pool = getSum(Q, melody.keys())
       for k in melody.keys(): melody[k] = scale*float(getSum(Q, [k]))/pool
@@ -91,7 +93,7 @@ def compose(Q, S, F=[], scale=10):
     else:
       old = list(melody.keys())
       for h in old: #current seq
-        prev = h[-4:] #last note on current seq
+        prev = h[-NOTE_LEN:] #last note on current seq
         p_h = melody[h] #pirio prob of current seq
         pool = getSum(Q, [prev]) #count for last note
         # print prev, pool 
@@ -99,29 +101,28 @@ def compose(Q, S, F=[], scale=10):
           # print len(Q[prev].keys())
           for q in Q[prev].keys():
 	    # print q[3], t
-            if q[3] == t: melody[h+q] = scale*p_h*float(Q[prev][q])/pool
+            if q[PITCH_LEN:] == t: melody[h+q] = scale*p_h*float(Q[prev][q])/pool
         del melody[h]
     print "...%d seq available"%len(melody.keys())
 
   print "\ndone!\n"
 
-  max_p, res = 0, "0000"
+  max_p, res = 0, "0"*NOTE_LEN
   for k in melody.keys():
     print "melody: ", k
     if melody[k] > max_p:
       max_p, res = melody[k], k
       
   print res, max_p
+
   notes_l = []
-  for i in xrange(0, len(res)/4):
-    note = res[i*4:i*4+4]
-    note_ = [int(note[0:3]), int(note[3])]
+  for i in xrange(0, len(res)/NOTE_LEN):
+    note = res[i*NOTE_LEN:(i+1)*NOTE_LEN]
+    note_ = [int(note[:PITCH_LEN]), int(note[PITCH_LEN:])]
     notes_l.append(note_)
 
   return notes_l
   
-
-
 
 """
 Q = importQ("tmp")
