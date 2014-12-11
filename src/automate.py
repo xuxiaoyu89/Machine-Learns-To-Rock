@@ -30,10 +30,10 @@ def importQ(filename, l = 2):
     
     try: Q[h][ns[1]] += count
     except KeyError: Q[h][ns[1]] = count
-  for k in Q.keys():
-    print "key: ", k
-    for k1 in Q[k].keys():
-      print k1
+  #for k in Q.keys():
+    # print "key: ", k
+    #for k1 in Q[k].keys():
+      # print k1
   return Q
 
 csv_header='0, 0, Header, 1, 13, 384\n1, 0, Start_track\n1, 0, Time_signature, 4, 2, 24, 8\n1, 0, Key_signature, 0, "major"\n1, 0, Tempo, 451127\n1, 0, End_track\n2, 0, Start_track\n2, 0, MIDI_port, 0\n2, 0, Title_t, "E. Piano"\n'
@@ -67,7 +67,7 @@ def getSum(Q, k):
     except KeyError: pass
   return n
 
-def compose(Q, S, F=[], scale=2):
+def compose(Q, S, F=[], scale=10):
   # The automaton machine
   # @Q is the set of all states
   # @S is sigma, the input sequence
@@ -79,7 +79,7 @@ def compose(Q, S, F=[], scale=2):
     
     t = "%s"%S.pop(0)
     if len(t) < 2: t = "0"+t
-    print "rythm: "+t
+    # print "rythm: "+t
 
     if melody.keys() == [] :
       print "...empty melody"
@@ -107,6 +107,10 @@ def compose(Q, S, F=[], scale=2):
 
   print "\ndone!\n"
 
+  notes_t = sorted(melody.items(), key = lambda x: x[1])
+  notes_t.reverse()
+
+  """
   max_p, res = 0, "0"*NOTE_LEN
   for k in melody.keys():
     print "melody: ", k
@@ -120,8 +124,15 @@ def compose(Q, S, F=[], scale=2):
     note = res[i*NOTE_LEN:(i+1)*NOTE_LEN]
     note_ = [int(note[:PITCH_LEN]), int(note[PITCH_LEN:])]
     notes_l.append(note_)
+  """
+  for x in notes_t:
+    notes_l = list(x[0][i*NOTE_LEN:(i+1)*NOTE_LEN] for i in xrange(0, len(x[0])/NOTE_LEN))
+    for i in xrange(len(notes_l)):
+      notes_l[i] = "%3s-%2s"%(int(notes_l[i][:PITCH_LEN]), int(notes_l[i][PITCH_LEN:]))
 
-  return notes_l
+    notes_s = " ".join(notes_l)
+    print notes_s, x[1]
+  return notes_t
   
 
 """

@@ -49,7 +49,7 @@ def compose(QFile, SFile, CSVFile):
   print "Composing based on "+QFile+"\n\twith rythm in "+SFile, len(S)
   melody = atm.compose(Q, S)
   print "...Done!\nExport to csv...\nExit..."
-  atm.export2CSV(melody, CSVFile)
+  # atm.export2CSV(melody, CSVFile)
 
 help_doc="""
 Missing or Wrong parameter.
