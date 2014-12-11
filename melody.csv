@@ -7,7 +7,3 @@
 2, 0, Start_track
 2, 0, MIDI_port, 0
 2, 0, Title_t, "E. Piano"
-2, 0, Note_on_c, 1, 0, 79
-2, 0, Note_off_c, 1, 0, 0
-2, 0, End_Track
-0, 0, End_of_file

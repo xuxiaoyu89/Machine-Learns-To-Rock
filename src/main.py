@@ -45,7 +45,14 @@ def compose(QFile, SFile, CSVFile):
     if line != "":
       print line
       S.append(int(line))
-
+  # test: print Q in a file
+  vQ = open("../Q_data", 'w')
+  for key1 in Q:
+    vQ.write("key1: " + key1 + "\n")
+    for key2 in Q[key1]:
+      vQ.write(key2 + "\n")
+    vQ.write("\n\n")
+  vQ.close()
   print "Composing based on "+QFile+"\n\twith rythm in "+SFile, len(S)
   melody = atm.compose(Q, S)
   print "...Done!\nExport to csv...\nExit..."
