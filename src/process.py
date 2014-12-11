@@ -1,7 +1,11 @@
 # normalize parameters
 INTERVAL_MAX = 2.0
 INTERVAL_PACE = 4
+NOTE_LEN = 5
+PITCH_LEN = 3
+
 import os
+import math
 
 # Notes processing class
 class Process:
@@ -9,11 +13,12 @@ class Process:
     pitches = []
     intervals = []
     noteSeqs = []
+    '''
     filename = f.rstrip(".csv")
     print filename
     # file = open(filename+".note", "w")
     i = 0
-
+    '''
     prev = None
     for line in open(f):
       # some lines are empty
@@ -27,11 +32,13 @@ class Process:
           # print a[0], len(intervals)
 	  # append noteSeq to noteSeqs
 	  if len(intervals) != 0:
+	    '''
 	    file = open(filename + "-" + str(i) + ".notes", "w")
             i += 1
 	    for j in xrange(len(pitches)):
 	      file.write(pitches[j] + "\t" + str(intervals[j]) + "\n")
 	    file.close()
+            '''
             noteSeq = self.normalizeIntervals(pitches, intervals)
      	    noteSeq.append("0000")
             noteSeqs.append(noteSeq)
@@ -47,12 +54,13 @@ class Process:
 	    if len(prev[2]) == 1: prev[2] = "00" + prev[2]
 	    if len(prev[2]) == 2: prev[2] = "0" + prev[2]
 	    pitches.append(prev[2])
-	    # print (int(a[1])-int(prev[1]))/1000.0
 	    intervals.append((int(a[1])-int(prev[1])))
 	    prev = [a[0], a[1], a[4]]
-    #for noteSeq in noteSeqs:
-      #for note in noteSeq:
-	# print note
+    '''
+    for noteSeq in noteSeqs:
+      for note in noteSeq:
+	 print note
+    '''
     return noteSeqs
 
     #noteseq = self.normalizeIntervals(pitches, intervals)
@@ -60,6 +68,7 @@ class Process:
     #return notes
 
   def normalizeIntervals(self, pitches, intervals):
+    '''
     # @ list of intervals, float
     # @convert into normalize 1-4 string list
     max_i, min_i = max(intervals), min(intervals)
@@ -67,15 +76,25 @@ class Process:
     # !!!!!!!!!1
     if d == 0: intervals = list("1" for e in intervals)
     else: intervals = list("%d"%round((e-min_i)/d+1) for e in intervals)
+    '''
+    pitchL = []
+    interL = []
+    for i in xrange(len(intervals)):
+      logInterval = int(round(math.log((intervals[i]*32/24), 2)))
+      if logInterval > 0:
+	if logInterval >= 10: interL.append(str(10))
+        else: interL.append("0"+str(logInterval))
+        pitchL.append(pitches[i])
     # each note include its pitch and its duaration
-    norm_res = list(pitches[i] + intervals[i] for i in xrange(len(intervals)))
+    norm_res = list(pitchL[i] + interL[i] for i in xrange(len(interL)))
     # each note inclued only its pitch
     # norm_res = pitches
     return norm_res
 
 n = Process()
-# n.generateNotes("../data/1501gbson1.csv")
+n.generateNotes("../data/1501gbson1.csv")
 
+'''
 path = "../data/"
 try: files = os.listdir(path)
 except OSError:
@@ -85,7 +104,7 @@ for f in files:
   if not f.endswith(".csv"): continue
   f = path+f
   noteSeqs = n.generateNotes(f)
-
+'''
 
 
 

@@ -2,7 +2,7 @@ import sys, os
 
 
 def train(path="../data/", minsup=3, out="../freq_samples/freq.notes"):
-  n = process.Notes()
+  n = process.Process()
 
   try: files = os.listdir(path)
   except OSError:
