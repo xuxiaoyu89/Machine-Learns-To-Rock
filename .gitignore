@@ -1,10 +1,13 @@
-reference/
-data/
-test/
+reference/*
+data/*
+test/*
 freq_samples/
+report/*
 *.wav
 *.pyc
 *.out
 *.log
 *.swp
 .DS_Store
+src/.DS_Store
+
