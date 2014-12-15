@@ -10,4 +10,4 @@ report/*
 .DS_Store
 src/.DS_Store
 demo/.DS_Store
-
+*.midi
