@@ -37,7 +37,7 @@ def importQ(filename, l = 2):
       # print k1
   return Q
 
-csv_header='0, 0, Header, 1, 13, 384\n1, 0, Start_track\n1, 0, Time_signature, 4, 2, 24, 8\n1, 0, Key_signature, 0, "major"\n1, 0, Tempo, 451127\n1, 0, End_track\n2, 0, Start_track\n2, 0, MIDI_port, 0\n2, 0, Title_t, "E. Piano"\n'
+csv_header='0, 0, Header, 1, 13, 384\n1, 0, Start_track\n1, 0, Time_signature, 4, 2, 24, 8\n1, 0, Key_signature, 0, "major"\n1, 0, Tempo, 451127\n1, 0, End_track\n2, 0, Start_track\n2, 0, MIDI_port, 0\n2, 0, Title_t, "E. Piano"\n2, 0, Tempo, 500000\n'
 
 csv_tail="0, 0, End_of_file"
 
