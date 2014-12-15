@@ -57,6 +57,7 @@ def export2CSV(notes, filename):
     l2 = "2, %d, Note_off_c, 1, %d, 0\n"%(time, pitch)
     f.write(l1)
     f.write(l2)
+
   f.write("2, %d, End_Track\n"%(time))
   f.write(csv_tail)
   f.close()
