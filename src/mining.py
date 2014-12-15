@@ -35,7 +35,7 @@ class Mining:
             # append to the list
             # only append whose length is between 1 and 10
             if depth > 1 and depth < 10:
-                results.append([list(self.notes[begin:begin+depth]), count])
+                results.append([list(self.notes[self.idx[begin]:self.idx[begin]+depth]), count])
         pivot = random.randint(begin, end-1)
         self.idx[begin], self.idx[pivot] = self.idx[pivot], self.idx[begin]
         t = self.getNotes(begin, depth)
