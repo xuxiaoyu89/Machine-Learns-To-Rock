@@ -13,6 +13,7 @@ class Process:
     pitches = []
     intervals = []
     noteSeqs = []
+    tempo = 24
     '''
     filename = f.rstrip(".csv")
     print filename
@@ -23,6 +24,7 @@ class Process:
     for line in open(f):
       # some lines are empty
       a = line.strip("\n").split(', ')
+      if a[2] == "Header": tempo = float(a[5])/10
       if a[2] == "Note_on_c":
 	if prev == None:
           prev = [a[0], a[1], a[4]]
@@ -39,7 +41,7 @@ class Process:
 	      file.write(pitches[j] + "\t" + str(intervals[j]) + "\n")
 	    file.close()
             '''
-            noteSeq = self.normalizeIntervals(pitches, intervals)
+            noteSeq = self.normalizeIntervals(pitches, intervals, tempo)
      	    noteSeq.append("0000")
             noteSeqs.append(noteSeq)
           # clear pitches and intervals
@@ -67,7 +69,7 @@ class Process:
     #noteseq.append("0000")
     #return notes
 
-  def normalizeIntervals(self, pitches, intervals):
+  def normalizeIntervals(self, pitches, intervals, tempo):
     '''
     # @ list of intervals, float
     # @convert into normalize 1-4 string list
@@ -80,7 +82,7 @@ class Process:
     pitchL = []
     interL = []
     for i in xrange(len(intervals)):
-      logInterval = int(round(math.log((intervals[i]*32/24), 2)))
+      logInterval = int(round(math.log((intervals[i]*32/tempo), 2)))
       if logInterval > 0:
 	if logInterval >= 10: interL.append(str(10))
         else: interL.append("0"+str(logInterval))
@@ -92,7 +94,7 @@ class Process:
     return norm_res
 
 n = Process()
-n.generateNotes("../data/1501gbson1.csv")
+#n.generateNotes("../data/1501gbson1.csv")
 
 '''
 path = "../data/"
