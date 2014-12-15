@@ -7,39 +7,39 @@
 2, 0, Start_track
 2, 0, MIDI_port, 0
 2, 0, Title_t, "E. Piano"
-2, 0, Note_on_c, 1, 64, 79
-2, 0, Note_off_c, 1, 64, 0
-2, 0, Note_on_c, 1, 66, 79
-2, 0, Note_off_c, 1, 66, 0
-2, 0, Note_on_c, 1, 66, 79
-2, 0, Note_off_c, 1, 66, 0
-2, 0, Note_on_c, 1, 66, 79
-2, 0, Note_off_c, 1, 66, 0
-2, 0, Note_on_c, 1, 62, 79
-2, 0, Note_off_c, 1, 62, 0
-2, 0, Note_on_c, 1, 62, 79
-2, 0, Note_off_c, 1, 62, 0
-2, 0, Note_on_c, 1, 59, 79
-2, 0, Note_off_c, 1, 59, 0
-2, 0, Note_on_c, 1, 60, 79
-2, 0, Note_off_c, 1, 60, 0
-2, 0, Note_on_c, 1, 60, 79
-2, 0, Note_off_c, 1, 60, 0
-2, 0, Note_on_c, 1, 57, 79
-2, 0, Note_off_c, 1, 57, 0
-2, 0, Note_on_c, 1, 57, 79
-2, 0, Note_off_c, 1, 57, 0
-2, 0, Note_on_c, 1, 57, 79
-2, 0, Note_off_c, 1, 57, 0
-2, 0, Note_on_c, 1, 62, 79
-2, 0, Note_off_c, 1, 62, 0
-2, 0, Note_on_c, 1, 65, 79
-2, 0, Note_off_c, 1, 65, 0
-2, 0, Note_on_c, 1, 67, 79
-2, 0, Note_off_c, 1, 67, 0
-2, 0, Note_on_c, 1, 65, 79
-2, 0, Note_off_c, 1, 65, 0
-2, 0, Note_on_c, 1, 65, 79
-2, 0, Note_off_c, 1, 65, 0
-2, 0, End_Track
+2, 0, Note_on_c, 1, 69, 79
+2, 96, Note_off_c, 1, 69, 0
+2, 96, Note_on_c, 1, 69, 79
+2, 192, Note_off_c, 1, 69, 0
+2, 192, Note_on_c, 1, 70, 79
+2, 288, Note_off_c, 1, 70, 0
+2, 288, Note_on_c, 1, 69, 79
+2, 480, Note_off_c, 1, 69, 0
+2, 480, Note_on_c, 1, 74, 79
+2, 576, Note_off_c, 1, 74, 0
+2, 576, Note_on_c, 1, 78, 79
+2, 672, Note_off_c, 1, 78, 0
+2, 672, Note_on_c, 1, 81, 79
+2, 768, Note_off_c, 1, 81, 0
+2, 768, Note_on_c, 1, 82, 79
+2, 960, Note_off_c, 1, 82, 0
+2, 960, Note_on_c, 1, 82, 79
+2, 1056, Note_off_c, 1, 82, 0
+2, 1056, Note_on_c, 1, 83, 79
+2, 1152, Note_off_c, 1, 83, 0
+2, 1152, Note_on_c, 1, 84, 79
+2, 1248, Note_off_c, 1, 84, 0
+2, 1248, Note_on_c, 1, 86, 79
+2, 1440, Note_off_c, 1, 86, 0
+2, 1440, Note_on_c, 1, 86, 79
+2, 1536, Note_off_c, 1, 86, 0
+2, 1536, Note_on_c, 1, 86, 79
+2, 1632, Note_off_c, 1, 86, 0
+2, 1632, Note_on_c, 1, 88, 79
+2, 1728, Note_off_c, 1, 88, 0
+2, 1728, Note_on_c, 1, 89, 79
+2, 1920, Note_off_c, 1, 89, 0
+2, 1920, Note_on_c, 1, 43, 79
+2, 2688, Note_off_c, 1, 43, 0
+2, 2016, End_Track
 0, 0, End_of_file

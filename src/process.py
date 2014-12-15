@@ -1,6 +1,6 @@
 # normalize parameters
 FULL_NOTE = 24*4 # full note length in MIDIclock
-MIN_NOTE = FULL_NOTE/128 # minimum note length in ms
+MIN_NOTE = float(FULL_NOTE)/128 # minimum note length in ms
 NOTE_LEN = 5
 PITCH_LEN = 3
 

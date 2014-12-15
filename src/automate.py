@@ -49,7 +49,7 @@ def export2CSV(notes, filename):
 
   for e in notes:
     pitch = int(e[:PITCH_LEN])
-    length = step*2**int(e[PITCH_LEN:])
+    length = round(step*2**int(e[PITCH_LEN:]))
     #2, 0, Note_on_c, 1, 81, 79
     #2, 960, Note_off_c, 1, 81, 0
     l1 = "2, %d, Note_on_c, 1, %d, 79\n"%(time, pitch)
