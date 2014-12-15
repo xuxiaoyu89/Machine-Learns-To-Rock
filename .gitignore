@@ -1,7 +1,6 @@
 reference/*
 data/*
 test/*
-freq_samples/
 report/*
 *.wav
 *.pyc
@@ -10,4 +9,5 @@ report/*
 *.swp
 .DS_Store
 src/.DS_Store
+demo/.DS_Store
 

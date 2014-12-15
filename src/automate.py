@@ -1,5 +1,6 @@
 import process as proc
 from process import NOTE_LEN, PITCH_LEN
+import random as rand
 
 def exportQ(Q, filename, minsup):
   # @Q is map of [notes] --> int (count)
@@ -42,16 +43,18 @@ csv_tail="0, 0, End_of_file"
 
 def export2CSV(notes, filename):
   f = open(filename, 'w')
-  #csv_header.lstrip("\n")
-  time, step = 0, 1000/proc.INTERVAL_PACE
+  csv_header.lstrip("\n")
+  time, step = 0, proc.MIN_NOTE
   f.write(csv_header)
 
   for e in notes:
+    pitch = int(e[:PITCH_LEN])
+    length = step*2**int(e[PITCH_LEN:])
     #2, 0, Note_on_c, 1, 81, 79
     #2, 960, Note_off_c, 1, 81, 0
-    l1 = "2, %d, Note_on_c, 1, %d, 79\n"%(time*step,e[0])
-    time += e[1]
-    l2 = "2, %d, Note_off_c, 1, %d, 0\n"%(time*step,e[0])
+    l1 = "2, %d, Note_on_c, 1, %d, 79\n"%(time, pitch)
+    time += length
+    l2 = "2, %d, Note_off_c, 1, %d, 0\n"%(time, pitch)
     f.write(l1)
     f.write(l2)
   f.write("2, %d, End_Track\n"%(time*step))
@@ -67,72 +70,60 @@ def getSum(Q, k):
     except KeyError: pass
   return n
 
-def compose(Q, S, F=[], scale=10):
+
+def randomPick(Q, t):
+  # Q is dict, t is length_of_notes in string
+  # return a notes (string) randomly (by probability)
+  # that has length in Q
+  candidates = []
+  for k in Q.keys():
+    if k[PITCH_LEN:] == t:
+      for occur in xrange(getSum(Q, [k])):
+        candidates.append(k)
+
+  rand.shuffle(candidates)
+  return candidates[int(rand.random()*len(candidates))]
+
+
+def compose(Q, S, F=[]):
   # The automaton machine
   # @Q is the set of all states
   # @S is sigma, the input sequence
   # @F is the final states, default empty
   # transitions and q0(initial)  will be computed
-  # scale: prevent prob from being too small
-  melody = {}
+  melody = ""
   while S != []:
     
     t = "%s"%S.pop(0)
     if len(t) < 2: t = "0"+t
-    # print "rythm: "+t
+    print "rythm: "+t, "melody "+melody
 
-    if melody.keys() == [] :
-      print "...empty melody"
-      for k in Q.keys():
-        # print "key: ", k
-        if k[(PITCH_LEN-NOTE_LEN):] == t: melody[k] = 0
-
-      pool = getSum(Q, melody.keys())
-      for k in melody.keys(): melody[k] = scale*float(getSum(Q, [k]))/pool
-
+    if melody == "":
+      melody = randomPick(Q, t)
     else:
-      old = list(melody.keys())
-      for h in old: #current seq
-        prev = h[-NOTE_LEN:] #last note on current seq
-        p_h = melody[h] #pirio prob of current seq
-        pool = getSum(Q, [prev]) #count for last note
-        # print prev, pool 
-        if pool != 0:
-          # print len(Q[prev].keys())
-          for q in Q[prev].keys():
-	    # print q[3], t
-            if q[PITCH_LEN:] == t: melody[h+q] = scale*p_h*float(Q[prev][q])/pool
-        del melody[h]
-    print "...%d seq available"%len(melody.keys())
+      candidates = []
+      prev = melody[-NOTE_LEN:]
+      for q in Q[prev].keys():
+        if q[PITCH_LEN:] == t:
+          for i in xrange(Q[prev][q]):
+            candidates.append(q)
+      rand.shuffle(candidates)
+      if candidates == []: melody += randomPick(Q, t)
+      else: 
+        melody += candidates[int(rand.random()*len(candidates))]
+    print "found. now melody: ", melody
 
   print "\ndone!\n"
 
-  notes_t = sorted(melody.items(), key = lambda x: x[1])
-  notes_t.reverse()
-
-  """
-  max_p, res = 0, "0"*NOTE_LEN
-  for k in melody.keys():
-    print "melody: ", k
-    if melody[k] > max_p:
-      max_p, res = melody[k], k
-      
-  print res, max_p
-
   notes_l = []
-  for i in xrange(0, len(res)/NOTE_LEN):
-    note = res[i*NOTE_LEN:(i+1)*NOTE_LEN]
-    note_ = [int(note[:PITCH_LEN]), int(note[PITCH_LEN:])]
-    notes_l.append(note_)
-  """
-  for x in notes_t:
-    notes_l = list(x[0][i*NOTE_LEN:(i+1)*NOTE_LEN] for i in xrange(0, len(x[0])/NOTE_LEN))
-    for i in xrange(len(notes_l)):
-      notes_l[i] = "%3s-%2s"%(int(notes_l[i][:PITCH_LEN]), int(notes_l[i][PITCH_LEN:]))
+  for i in xrange(len(melody)/NOTE_LEN):
+    # notes_l.append("%3s-%2s"%(int(melody[i*NOTE_LEN:i*NOTE_LEN+PITCH_LEN]), int(melody[i*NOTE_LEN+PITCH_LEN:(i+1)*NOTE_LEN])))
+    notes_l.append(melody[i*NOTE_LEN:(i+1)*NOTE_LEN])
 
-    notes_s = " ".join(notes_l)
-    print notes_s, x[1]
-  return notes_t
+  notes_s = " ".join(notes_l)
+  print notes_s
+
+  return notes_l
   
 
 """
